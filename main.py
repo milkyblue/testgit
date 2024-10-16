@@ -16,7 +16,7 @@ img = Image.open("images/img1.jpg")
 st.image(img, width=256)
 st.title("PROMPT GENIE 💬")
 st.subheader("by MIRACOM-INC")
-USE_OPENAI = False
+USE_OPENAI = True
 
 if "messages" not in st.session_state:
     st.session_state["messages"] = []
@@ -75,7 +75,7 @@ with st.sidebar:
             load_dotenv()
             if os.getenv('OPENAI_API_KEY') is None:
                 raise ValueError('OPENAI_API_KEY environment variable is not set')
-            st.secrets["OPENAI_API_KEY"]
+            #st.secrets["OPENAI_API_KEY"]
             prompt_template = user_text_prompt + "\n\n#Question:\n{question}\n\n#Answer:"
             prompt = PromptTemplate.from_template(prompt_template)
             st.session_state["chain"] = create_chain(prompt, "gpt-4o")
@@ -87,6 +87,9 @@ with st.sidebar:
             )
             chain = prompt | llm | StrOutputParser()
             st.session_state["chain"] = chain
+
+
+            
         # prompt_template = user_text_prompt + "\n\n#Question:\n{question}\n\n#Answer:"
         # prompt = PromptTemplate.from_template(prompt_template)
         # st.session_state["chain"] = create_chain(prompt, "gpt-4o")
@@ -103,7 +106,7 @@ with st.sidebar:
         prompt = load_prompt(f"{user_selected_prompt}.yaml", encoding="utf8")
         # task 에러
         task = "프롬프트 전문가"
-        
+        tab2.markdown(prompt)
         #기존코드
         #st.session_state["chain"] = create_chain(prompt, "gpt-4o")
         prompt_maker = prompt.partial(task=task)
